@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import { getComplaintById } from '../services/api'
 import './TrackComplaint.css'
 
 function TrackComplaint() {
@@ -14,14 +14,16 @@ function TrackComplaint() {
     setError(null)
     setComplaint(null)
     try {
-      const response = await axios.get(`/api/complaints/${complaintId}`)
-      setComplaint(response.data)
+      const data = await getComplaintById(complaintId.trim())
+      setComplaint(data)
     } catch (err) {
-      setError(
-        err.response?.status === 404
-          ? 'No complaint found with that ID.'
-          : 'Something went wrong. Please try again.'
-      )
+      if (err.response && err.response.status === 404) {
+        setError('Complaint not found')
+      } else if (!err.response) {
+        setError('Unable to connect to server')
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -37,14 +39,16 @@ function TrackComplaint() {
     if (!status) return defaultVisuals;
 
     switch (status.toLowerCase()) {
-      case 'open':
-        return { color: 'var(--tertiary)', glowColor: 'rgba(105, 156, 255, 0.3)', textShadow: '0 0 15px rgba(105, 156, 255, 0.3)' };
+      case 'new':
+        return { color: 'var(--tertiary, #69acff)', glowColor: 'rgba(105, 172, 255, 0.3)', textShadow: '0 0 15px rgba(105, 172, 255, 0.3)' };
+      case 'in progress':
       case 'in-progress':
-      case 'under review':
-        return { color: 'var(--secondary)', glowColor: 'rgba(248, 160, 16, 0.3)', textShadow: '0 0 15px rgba(248, 160, 16, 0.3)' };
+        return { color: 'var(--secondary, #f8a010)', glowColor: 'rgba(248, 160, 16, 0.3)', textShadow: '0 0 15px rgba(248, 160, 16, 0.3)' };
+      case 'pending':
+        return { color: '#ef4444', glowColor: 'rgba(239, 68, 68, 0.3)', textShadow: '0 0 15px rgba(239, 68, 68, 0.3)' };
       case 'resolved':
       case 'closed':
-        return { color: 'var(--primary)', glowColor: 'rgba(105, 246, 184, 0.3)', textShadow: '0 0 15px rgba(105, 246, 184, 0.3)' };
+        return { color: 'var(--primary, #69f6b8)', glowColor: 'rgba(105, 246, 184, 0.3)', textShadow: '0 0 15px rgba(105, 246, 184, 0.3)' };
       default:
         return defaultVisuals;
     }
@@ -74,7 +78,7 @@ function TrackComplaint() {
                 value={complaintId}
                 onChange={(e) => setComplaintId(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="OL-7742-X"
+                placeholder="Enter Complaint ID (e.g. 1)"
               />
               <button
                 className="search-btn"
@@ -92,25 +96,36 @@ function TrackComplaint() {
 
           {complaint && !error && (
             <div className="result-section">
-              <p className="result-label">Current Status</p>
-              <div className="status-display">
-                <div
-                  className="status-glow"
-                  style={{ backgroundColor: statusVisuals.glowColor }}
-                ></div>
-                <h2
-                  className="status-text"
-                  style={{
-                    color: statusVisuals.color,
-                    textShadow: statusVisuals.textShadow
-                  }}
-                >
-                  {complaint.status}
-                </h2>
+              <p className="result-label">Tracking Information</p>
+              
+              <div className="tracking-card">
+                <div className="tracking-card-header">
+                  <span className="tracking-id">ID: #{complaint.id ? String(complaint.id).padStart(4, "0") : "0000"}</span>
+                  <span className="tracking-category">{complaint.category || "General"}</span>
+                </div>
+                
+                <h3 className="tracking-title">{complaint.title}</h3>
+                <p className="tracking-desc">{complaint.description}</p>
+
+                <div className="status-display-wrapper">
+                  <p className="status-label">Current Status</p>
+                  <div className="status-display">
+                    <div
+                      className="status-glow"
+                      style={{ backgroundColor: statusVisuals.glowColor }}
+                    ></div>
+                    <h2
+                      className="status-text"
+                      style={{
+                        color: statusVisuals.color,
+                        textShadow: statusVisuals.textShadow
+                      }}
+                    >
+                      {complaint.status || "New"}
+                    </h2>
+                  </div>
+                </div>
               </div>
-              <p className="last-updated">
-                Last updated: {new Date(complaint.lastUpdate || Date.now()).toLocaleString()}
-              </p>
             </div>
           )}
         </div>

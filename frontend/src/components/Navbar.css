@@ -72,3 +72,51 @@
   .home-links { display: none; }
   .hidden-mobile { display: none; }
 }
+
+/* From Uiverse.io by reglobby */ 
+.user-profile {
+  width: 131px;
+  height: 51px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: linear-gradient(
+    to bottom right,
+    #69f6b8 0%,
+    rgba(105, 246, 184, 0) 30%
+  );
+  background-color: rgba(105, 246, 184, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+}
+
+.user-profile:hover,
+.user-profile:focus {
+  background-color: rgba(105, 246, 184, 0.6);
+  box-shadow: 0 0 15px rgba(105, 246, 184, 0.6);
+  outline: none;
+}
+
+.user-profile-inner {
+  width: 127px;
+  height: 47px;
+  border-radius: 13px;
+  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+}
+
+.user-profile-inner svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+}

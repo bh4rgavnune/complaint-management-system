@@ -294,3 +294,128 @@
 .verified {
   gap: 0.25rem;
 }
+
+/* Success Confirmation Card Styles */
+.success-confirmation-card {
+  text-align: center;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.success-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.success-icon {
+  font-size: 3.5rem;
+  color: var(--primary, #69f6b8);
+  text-shadow: 0 0 15px rgba(105, 246, 184, 0.4);
+}
+
+.success-header h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.confirmation-details {
+  background-color: var(--surface-container-low, #131313);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  width: 100%;
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.detail-label {
+  color: var(--on-surface-variant, #adaaaa);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.detail-value.highlight {
+  color: var(--primary, #69f6b8);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.detail-value.status-tag {
+  background: rgba(105, 246, 184, 0.1);
+  color: var(--primary, #69f6b8);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.confirmation-instructions {
+  font-size: 0.85rem;
+  color: var(--on-surface-variant, #adaaaa);
+  margin: 0;
+  font-weight: 500;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.confirmation-actions .action-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.track-btn {
+  background: linear-gradient(to bottom right, var(--primary), var(--primary-container));
+  color: var(--on-primary-container, #0e0e0e);
+  box-shadow: 0 4px 20px rgba(105, 246, 184, 0.15);
+}
+
+.track-btn:hover {
+  box-shadow: 0 4px 30px rgba(105, 246, 184, 0.3);
+  filter: brightness(1.1);
+}
+
+.submit-more-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.submit-more-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.confirmation-actions .action-btn:active {
+  transform: scale(0.95);
+}

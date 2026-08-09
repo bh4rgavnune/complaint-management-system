@@ -12,6 +12,7 @@ public class Complaint {
     private String description;
     private String category;
     private String status;
+    private String submittedBy;
     
     public Long getId() {
 		return id;
@@ -42,6 +43,12 @@ public class Complaint {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getSubmittedBy() {
+		return submittedBy;
+	}
+	public void setSubmittedBy(String submittedBy) {
+		this.submittedBy = submittedBy;
 	}
 	
 }
