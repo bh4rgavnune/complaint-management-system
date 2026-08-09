@@ -1,137 +1,135 @@
-import { useState } from 'react'
-import { getComplaintById } from '../services/api'
-import './TrackComplaint.css'
+import { useState } from 'react';
+import { getComplaintById } from '../services/api';
+import StatusBadge from '../components/StatusBadge';
+import './TrackComplaint.css';
 
 function TrackComplaint() {
-  const [complaintId, setComplaintId] = useState('')
-  const [complaint, setComplaint] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [complaintId, setComplaintId] = useState('');
+  const [complaint, setComplaint] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSearch = async () => {
-    if (!complaintId.trim()) return
-    setLoading(true)
-    setError(null)
-    setComplaint(null)
+    if (!complaintId.trim()) return;
+    setLoading(true);
+    setError(null);
+    setComplaint(null);
     try {
-      const data = await getComplaintById(complaintId.trim())
-      setComplaint(data)
+      const data = await getComplaintById(complaintId.trim());
+      setComplaint(data);
     } catch (err) {
       if (err.response && err.response.status === 404) {
-        setError('Complaint not found')
+        setError('Ticket ID not found in the platform ledger.');
       } else if (!err.response) {
-        setError('Unable to connect to server')
+        setError('Unable to connect to telemetry service.');
       } else {
-        setError('Something went wrong. Please try again.')
+        setError('An unexpected error occurred while fetching ticket status.');
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleSearch()
-  }
-
-  // Helper for dynamic colors
-  const getStatusVisuals = (status) => {
-    const defaultVisuals = { color: 'var(--on-surface-variant)', glowColor: 'rgba(173, 170, 170, 0.2)' };
-    if (!status) return defaultVisuals;
-
-    switch (status.toLowerCase()) {
-      case 'new':
-        return { color: 'var(--tertiary, #69acff)', glowColor: 'rgba(105, 172, 255, 0.3)', textShadow: '0 0 15px rgba(105, 172, 255, 0.3)' };
-      case 'in progress':
-      case 'in-progress':
-        return { color: 'var(--secondary, #f8a010)', glowColor: 'rgba(248, 160, 16, 0.3)', textShadow: '0 0 15px rgba(248, 160, 16, 0.3)' };
-      case 'pending':
-        return { color: '#ef4444', glowColor: 'rgba(239, 68, 68, 0.3)', textShadow: '0 0 15px rgba(239, 68, 68, 0.3)' };
-      case 'resolved':
-      case 'closed':
-        return { color: 'var(--primary, #69f6b8)', glowColor: 'rgba(105, 246, 184, 0.3)', textShadow: '0 0 15px rgba(105, 246, 184, 0.3)' };
-      default:
-        return defaultVisuals;
-    }
-  }
-
-  const statusVisuals = getStatusVisuals(complaint?.status);
+    if (e.key === 'Enter') handleSearch();
+  };
 
   return (
-    <div className="track-main">
-      <div className="bg-accent"></div>
+    <div className="track-vercel-page">
+      <div className="ds-container page-container">
+        <div className="mono-eyebrow">TELEMETRY // REAL-TIME LOOKUP</div>
+        <h1 className="page-title">Track a ticket.</h1>
+        <p className="page-subtitle">
+          Query real-time audit logs and resolution progress for any active complaint.
+        </p>
 
-      <div className="track-container">
-        {/* Header */}
-        <div className="track-header">
-          <h1>Track Complaint</h1>
-          <p>Monitor your submission status securely on the <span>Complaint System</span>.</p>
-        </div>
-
-        {/* Tracking UI */}
-        <div>
-          <div className="search-section group">
-            <label className="search-label">Complaint ID</label>
-            <div className="search-input-group">
+        <div className="track-search-card vercel-card-large">
+          <div className="vercel-form-group">
+            <label className="vercel-form-label" htmlFor="ticket-input">
+              ENTER COMPLAINT REFERENCE ID
+            </label>
+            <div className="search-input-flex">
               <input
+                id="ticket-input"
                 type="text"
-                className="search-input"
+                className="vercel-input mono-input"
                 value={complaintId}
                 onChange={(e) => setComplaintId(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Enter Complaint ID (e.g. 1)"
+                placeholder="E.g. 1"
               />
               <button
-                className="search-btn"
+                className="btn-primary"
                 onClick={handleSearch}
                 disabled={loading}
               >
-                <span className="material-symbols-outlined">
-                  {loading ? 'hourglass_empty' : 'search'}
-                </span>
+                {loading ? 'Querying...' : 'Query Ticket →'}
               </button>
             </div>
           </div>
 
-          {error && <div className="error-message">❌ {error}</div>}
-
-          {complaint && !error && (
-            <div className="result-section">
-              <p className="result-label">Tracking Information</p>
-              
-              <div className="tracking-card">
-                <div className="tracking-card-header">
-                  <span className="tracking-id">ID: #{complaint.id ? String(complaint.id).padStart(4, "0") : "0000"}</span>
-                  <span className="tracking-category">{complaint.category || "General"}</span>
-                </div>
-                
-                <h3 className="tracking-title">{complaint.title}</h3>
-                <p className="tracking-desc">{complaint.description}</p>
-
-                <div className="status-display-wrapper">
-                  <p className="status-label">Current Status</p>
-                  <div className="status-display">
-                    <div
-                      className="status-glow"
-                      style={{ backgroundColor: statusVisuals.glowColor }}
-                    ></div>
-                    <h2
-                      className="status-text"
-                      style={{
-                        color: statusVisuals.color,
-                        textShadow: statusVisuals.textShadow
-                      }}
-                    >
-                      {complaint.status || "New"}
-                    </h2>
-                  </div>
-                </div>
-              </div>
+          {error && (
+            <div className="form-error-banner" style={{ marginTop: '16px' }}>
+              ❌ {error}
             </div>
           )}
         </div>
+
+        {complaint && !error && (
+          <div className="track-result-container">
+            <div className="vercel-card-large track-detail-card">
+              <div className="track-header-row">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span className="mono-eyebrow" style={{ margin: 0 }}>
+                    TICKET REF #{complaint.id}
+                  </span>
+                  <span className="category-chip">{complaint.category || 'GENERAL'}</span>
+                </div>
+                <StatusBadge status={complaint.status} />
+              </div>
+
+              <h2 className="track-complaint-title">{complaint.title}</h2>
+              <p className="track-complaint-body">{complaint.description}</p>
+
+              <div className="track-divider"></div>
+
+              {/* Progress Stepper */}
+              <div className="track-stepper">
+                <div className={`step-item ${complaint ? 'completed' : ''}`}>
+                  <div className="step-dot"></div>
+                  <div className="step-label">01 // RECEIVED</div>
+                </div>
+                <div className={`step-line ${complaint.status?.toLowerCase() !== 'pending' ? 'active' : ''}`}></div>
+                <div className={`step-item ${complaint.status?.toLowerCase() !== 'pending' ? 'completed' : ''}`}>
+                  <div className="step-dot"></div>
+                  <div className="step-label">02 // UNDER REVIEW</div>
+                </div>
+                <div className={`step-line ${complaint.status?.toLowerCase() === 'resolved' ? 'active' : ''}`}></div>
+                <div className={`step-item ${complaint.status?.toLowerCase() === 'resolved' ? 'completed' : ''}`}>
+                  <div className="step-dot"></div>
+                  <div className="step-label">03 // RESOLVED</div>
+                </div>
+              </div>
+
+              {/* Terminal Log Audit Mockup */}
+              <div className="vercel-terminal" style={{ marginTop: '32px' }}>
+                <div className="vercel-terminal-header">
+                  <div className="vercel-terminal-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <span>AUDIT_LOG_TRACE</span>
+                </div>
+                <div>[SYS_LOG] Ticket #{complaint.id} initialized by user "{complaint.submittedBy || 'Anonymous'}".</div>
+                <div>[STATUS] Current status evaluated as "{complaint.status || 'NEW'}".</div>
+                <div>[PRIORITY] System priority set to "{complaint.priority || 'NORMAL'}".</div>
+                <div>[GATEWAY] Encrypted audit trail verified on node ledger.</div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  )
+  );
 }
 
-export default TrackComplaint
+export default TrackComplaint;

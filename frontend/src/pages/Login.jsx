@@ -6,9 +6,11 @@ import './Login.css';
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setError('');
     axios.post("http://localhost:8080/api/auth/login", { username, password })
       .then(res => {
         localStorage.setItem("user", JSON.stringify(res.data));
@@ -18,46 +20,67 @@ function Login() {
           window.location.href = "/my-complaints";
         }
       })
-      .catch(() => alert("Invalid credentials"));
+      .catch(() => setError("Invalid username or password credentials."));
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box glass-panel">
-        <h2>System Login</h2>
-        <p>Authenticate for administrative access.</p>
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="form-group">
-            <label className="form-label" htmlFor="username">
-              <span className="dot dot-primary"></span> Username
+    <div className="auth-vercel-page">
+      <div className="vercel-card-large auth-card">
+        <div className="auth-brand-head">
+          <div className="vercel-logo-mark" style={{ justifyContent: 'center', marginBottom: '8px' }}>
+            <svg viewBox="0 0 75 65" height="24" fill="currentColor">
+              <path d="M37.5 0L75 65H0z" />
+            </svg>
+          </div>
+          <h2 className="auth-title">Log in to Complaint System</h2>
+          <p className="auth-subtitle">Enter your credentials to access your user ledger or administrative dashboard.</p>
+        </div>
+
+        {error && (
+          <div className="form-error-banner" style={{ marginTop: '16px' }}>
+            ❌ {error}
+          </div>
+        )}
+
+        <form onSubmit={handleLogin} style={{ marginTop: '24px' }}>
+          <div className="vercel-form-group">
+            <label className="vercel-form-label" htmlFor="username">
+              USERNAME
             </label>
             <input
               type="text"
               id="username"
-              className="form-input"
+              className="vercel-input"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter username"
               required
             />
           </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="password">
-              <span className="dot dot-secondary"></span> Password
+
+          <div className="vercel-form-group">
+            <label className="vercel-form-label" htmlFor="password">
+              PASSWORD
             </label>
             <input
               type="password"
               id="password"
-              className="form-input"
+              className="vercel-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
               required
             />
           </div>
-          <button type="submit" className="submit-btn login-btn">Login</button>
+
+          <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '8px' }}>
+            Log In →
+          </button>
         </form>
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.85rem' }}>
-          <span style={{ color: 'var(--on-surface-variant, #adaaaa)' }}>Don't have an account? </span>
-          <Link to="/register" style={{ color: '#69f6b8', textDecoration: 'none', fontWeight: 'bold' }}>Sign up</Link>
+
+        <div className="auth-footer-link">
+          <span>Don't have an account? </span>
+          <Link to="/register">Sign up for free</Link>
         </div>
       </div>
     </div>

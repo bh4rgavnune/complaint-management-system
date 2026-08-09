@@ -11,7 +11,7 @@ function SubmitComplaint() {
     category: '',
     priority: 'medium',
   });
-  const [status, setStatus] = useState(null); // 'success' | 'error' | null
+  const [status, setStatus] = useState(null);
   const [submittedComplaint, setSubmittedComplaint] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -50,216 +50,194 @@ function SubmitComplaint() {
   };
 
   return (
-    <div className="submit-obsidian">
-      {/* Background Decoration */}
-      <div className="bg-decor-wrapper">
-        <div className="bg-decor submit-top-left"></div>
-        <div className="bg-decor submit-bottom-right"></div>
-      </div>
+    <div className="submit-vercel-page">
+      <div className="ds-container page-container">
+        <div className="mono-eyebrow">ENTRY PORTAL // VERIFIED INTAKE</div>
+        <h1 className="page-title">File a complaint.</h1>
+        <p className="page-subtitle">
+          Submit a formal ticket to the ledger. All complaints are encrypted and indexed for tracking.
+        </p>
 
-      <main className="submit-main">
-        {/* Editorial Header */}
-        <div className="submit-header">
-          <span className="entry-portal-label">Entry Portal</span>
-          <h1>Submit a Complaint</h1>
-          <p>Initiate a formal record in the ledger. All entries are encrypted and chronologically indexed for regulatory compliance.</p>
-        </div>
-
-        {/* Form Container */}
-        <div className="submit-container">
-          <div className="glass-panel">
-            <div className="glass-decor"></div>
-
+        <div className="submit-layout-grid">
+          <div className="vercel-card-large submit-form-card">
             {status === 'success' && submittedComplaint ? (
-              <div className="success-confirmation-card">
-                <div className="success-header">
-                  <span className="material-symbols-outlined success-icon">check_circle</span>
-                  <h2>Complaint Submitted Successfully</h2>
+              <div className="vercel-success-receipt">
+                <div className="mono-eyebrow" style={{ color: 'var(--ds-cyan-deep)' }}>
+                  ✓ SUBMISSION CONFIRMED
                 </div>
-                
-                <div className="confirmation-details">
-                  <div className="detail-row">
-                    <span className="detail-label">Complaint ID:</span>
-                    <span className="detail-value highlight">#{submittedComplaint.id}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Status:</span>
-                    <span className="detail-value status-tag">{submittedComplaint.status || "NEW"}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Submitted By:</span>
-                    <span className="detail-value">{submittedComplaint.submittedBy || "Anonymous"}</span>
-                  </div>
-                </div>
-
-                <p className="confirmation-instructions">
-                  Please save this Complaint ID for future tracking.
+                <h2>Ticket Created Successfully.</h2>
+                <p style={{ color: 'var(--ds-body)', marginBottom: '24px' }}>
+                  Your ticket has been recorded in the platform ledger. Save your Reference ID below for tracking.
                 </p>
 
-                <div className="confirmation-actions">
+                <div className="vercel-terminal" style={{ marginBottom: '24px' }}>
+                  <div className="vercel-terminal-header">
+                    <div className="vercel-terminal-dots">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <span>TICKET_RECEIPT_V3</span>
+                  </div>
+                  <div>TICKET ID    : #{submittedComplaint.id}</div>
+                  <div>SUBMITTED BY : {submittedComplaint.submittedBy || "Anonymous"}</div>
+                  <div>CATEGORY     : {submittedComplaint.category || "GENERAL"}</div>
+                  <div>STATUS       : {submittedComplaint.status || "NEW"}</div>
+                  <div>TIMESTAMP    : {new Date().toISOString()}</div>
+                </div>
+
+                <div className="receipt-actions">
                   <button 
-                    className="action-btn track-btn"
+                    className="btn-primary"
                     onClick={() => navigate('/track')}
                   >
-                    Track This Complaint
+                    Track Ticket Status →
                   </button>
                   <button 
-                    className="action-btn submit-more-btn"
+                    className="btn-secondary"
                     onClick={() => {
                       setStatus(null);
                       setSubmittedComplaint(null);
                     }}
                   >
-                    Submit Another Complaint
+                    Submit Another Ticket
                   </button>
                 </div>
               </div>
             ) : (
-              <>
+              <form onSubmit={handleSubmit} className="vercel-submit-form">
                 {status === 'error' && (
-                  <div className="status-msg error-msg">❌ Failed to log complaint. Please verify your connection.</div>
+                  <div className="form-error-banner">
+                    ⚠️ Failed to submit complaint. Please check your backend connection.
+                  </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="submit-form">
+                <div className="vercel-form-group">
+                  <label className="vercel-form-label" htmlFor="title">
+                    01 // COMPLAINT SUBJECT
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    className="vercel-input"
+                    placeholder="E.g. Database connection timeout in production cluster"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-                  {/* Title */}
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="title">
-                      <span className="dot dot-primary"></span> Complaint Subject
+                <div className="form-two-col">
+                  <div className="vercel-form-group">
+                    <label className="vercel-form-label" htmlFor="category">
+                      02 // CLASSIFICATION
                     </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="form-input"
-                      placeholder="Brief summary of the issue..."
-                      value={formData.title}
+                    <select
+                      id="category"
+                      name="category"
+                      className="vercel-select"
+                      value={formData.category}
                       onChange={handleChange}
                       required
-                    />
+                    >
+                      <option disabled value="">Select Category</option>
+                      <option value="technical">Technical Infrastructure</option>
+                      <option value="financial">Financial Discrepancy</option>
+                      <option value="personnel">Personnel Conduct</option>
+                      <option value="compliance">Regulatory Compliance</option>
+                      <option value="security">Data Security Breach</option>
+                      <option value="other">Other</option>
+                    </select>
                   </div>
 
-                  <div className="form-row">
-                    {/* Category */}
-                    <div className="form-group flex-1">
-                      <label className="form-label" htmlFor="category">
-                        <span className="dot dot-tertiary"></span> Classification
-                      </label>
-                      <div className="select-wrapper">
-                        <select
-                          id="category"
-                          name="category"
-                          className="form-select"
-                          value={formData.category}
-                          onChange={handleChange}
-                          required
+                  <div className="vercel-form-group">
+                    <label className="vercel-form-label">
+                      03 // PRIORITY LEVEL
+                    </label>
+                    <div className="priority-pill-selector">
+                      {['low', 'medium', 'high'].map((p) => (
+                        <button
+                          key={p}
+                          type="button"
+                          className={`tab-ghost ${formData.priority === p ? 'active' : ''}`}
+                          onClick={() => handlePriority(p)}
                         >
-                          <option disabled value="">Select category</option>
-                          <option value="technical">Technical Infrastructure</option>
-                          <option value="financial">Financial Discrepancy</option>
-                          <option value="personnel">Personnel Conduct</option>
-                          <option value="compliance">Regulatory Compliance</option>
-                          <option value="security">Data Security Breach</option>
-                          <option value="other">Other</option>
-                        </select>
-                        <span className="material-symbols-outlined select-icon">expand_more</span>
-                      </div>
-                    </div>
-
-                    {/* Priority */}
-                    <div className="form-group flex-1">
-                      <label className="form-label">
-                        <span className="dot dot-secondary"></span> Priority Tier
-                      </label>
-                      <div className="priority-group">
-                        {['low', 'medium', 'high'].map(p => (
-                          <button
-                            key={p}
-                            type="button"
-                            className={`priority-btn ${formData.priority === p ? 'active' : ''}`}
-                            onClick={() => handlePriority(p)}
-                          >
-                            {p}
-                          </button>
-                        ))}
-                      </div>
+                          {p.toUpperCase()}
+                        </button>
+                      ))}
                     </div>
                   </div>
+                </div>
 
-                  {/* Description */}
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="description">
-                      <span className="dot dot-primary"></span> Full Disclosure
-                    </label>
-                    <textarea
-                      id="description"
-                      name="description"
-                      className="form-textarea"
-                      placeholder="Provide a detailed account of the incident..."
-                      rows="5"
-                      value={formData.description}
-                      onChange={handleChange}
-                      required
-                    ></textarea>
-                  </div>
+                <div className="vercel-form-group">
+                  <label className="vercel-form-label" htmlFor="description">
+                    04 // DETAILED DISCLOSURE
+                  </label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    className="vercel-textarea"
+                    placeholder="Provide full step-by-step account of the issue, affected systems, and expected behavior..."
+                    rows="6"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                  ></textarea>
+                </div>
 
-                  {/* Attachment */}
-                  <div className="attachment-dropzone">
-                    <div className="upload-icon-wrap">
-                      <span className="material-symbols-outlined upload-icon">upload_file</span>
-                    </div>
-                    <div className="upload-text">
-                      <p className="primary-text">Supporting Documents</p>
-                      <p className="secondary-text">Drag and drop or <span>browse</span> files (Max 10MB)</p>
-                    </div>
-                  </div>
+                <div className="vercel-dropzone-box">
+                  <div className="dropzone-mono">ATTACHMENTS // DRAG & DROP</div>
+                  <div className="dropzone-sub">PNG, JPG, PDF, TXT supported up to 10MB</div>
+                </div>
 
-                  {/* Actions */}
-                  <div className="form-actions">
-                    <div className="action-info">
-                      <span className="material-symbols-outlined info-icon">info</span>
-                      Reference ID will be generated upon submission
-                    </div>
-                    <div className="action-buttons">
-                      <button
-                        type="button"
-                        className="discard-btn"
-                        onClick={() => setFormData({ title: '', description: '', category: '', priority: 'medium' })}
-                      >
-                        Discard
-                      </button>
-                      <button type="submit" className="submit-btn" disabled={loading}>
-                        {loading ? 'Processing...' : 'Log Complaint'}
-                      </button>
-                    </div>
+                <div className="form-submit-footer">
+                  <div className="footer-mono-note">
+                    🔒 AES-256 Encrypted ledger submission
                   </div>
-                </form>
-              </>
+                  <div className="footer-btn-group">
+                    <button
+                      type="button"
+                      className="btn-secondary-sm"
+                      onClick={() => setFormData({ title: '', description: '', category: '', priority: 'medium' })}
+                    >
+                      Reset Form
+                    </button>
+                    <button type="submit" className="btn-primary" disabled={loading}>
+                      {loading ? 'Logging Ticket...' : 'Submit Complaint →'}
+                    </button>
+                  </div>
+                </div>
+              </form>
             )}
           </div>
 
-          {/* Side Metadata Grid */}
-          <div className="metadata-grid">
-            <div className="meta-card status-card">
-              <p className="meta-label">STATUS</p>
-              <div className="meta-value system-online">
-                <div className="pulse-dot"></div>
-                System Online
-              </div>
+          {/* Sidebar System Telemetry */}
+          <div className="submit-sidebar">
+            <div className="metric-card">
+              <div className="metric-label">SYSTEM AVAILABILITY</div>
+              <div className="metric-value" style={{ color: 'var(--ds-cyan-deep)' }}>99.98%</div>
+              <span className="mono-eyebrow" style={{ marginTop: '8px', fontSize: '11px' }}>
+                All nodes operational
+              </span>
             </div>
-            <div className="meta-card queue-card">
-              <p className="meta-label">QUEUE DEPTH</p>
-              <div className="meta-value">4 Minutes Average</div>
+
+            <div className="metric-card">
+              <div className="metric-label">AVG SLA INTAKE</div>
+              <div className="metric-value">&lt; 4 MINS</div>
+              <span className="mono-eyebrow" style={{ marginTop: '8px', fontSize: '11px' }}>
+                Auto-assigned to queue
+              </span>
             </div>
-            <div className="meta-card encrypt-card">
-              <p className="meta-label">ENCRYPTION</p>
-              <div className="meta-value verified">
-                AES-256 <span className="material-symbols-outlined verified-icon">verified_user</span>
-              </div>
+
+            <div className="metric-card">
+              <div className="metric-label">ENCRYPTION ENGINE</div>
+              <div className="metric-value" style={{ fontSize: '20px' }}>TLS 1.3 / AES</div>
+              <span className="mono-eyebrow" style={{ marginTop: '8px', fontSize: '11px' }}>
+                Zero-knowledge audit
+              </span>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

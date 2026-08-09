@@ -4,73 +4,127 @@ import "./Home.css";
 export default function Home() {
   const navigate = useNavigate();
 
-  const actions = [
+  const features = [
     {
-      title: "Submit Complaint",
-      desc: "Report a new issue or feedback",
-      icon: "add",
-      path: "/submit"
+      eyebrow: "01 // SUBMISSION",
+      title: "Submit Complaints in Seconds",
+      desc: "Streamlined intake form with automatic category detection, priority tagging, and attachment support.",
+      path: "/submit",
+      actionText: "File Complaint →"
     },
     {
-      title: "Track Complaint",
-      desc: "Check the status of existing tickets",
-      icon: "search",
-      path: "/track"
+      eyebrow: "02 // TELEMETRY",
+      title: "Real-Time Status Tracking",
+      desc: "Live step timeline with instant status updates, auditor logs, and resolution estimates.",
+      path: "/track",
+      actionText: "Track Ticket →"
     },
     {
-      title: "Admin Dashboard",
-      desc: "Manage systemic operations and users",
-      icon: "settings",
-      path: "/admin"
+      eyebrow: "03 // DASHBOARD",
+      title: "Enterprise Governance",
+      desc: "Role-based operations control center with complaint assignment, SLA tracking, and audit history.",
+      path: "/admin",
+      actionText: "View Dashboard →"
     },
     {
-      title: "Reports",
-      desc: "Visualize complaint trends and metrics",
-      icon: "bar_chart",
-      path: "/reports"
-    },
+      eyebrow: "04 // ANALYTICS",
+      title: "Intelligence & Reports",
+      desc: "Systemic metrics dashboard with category breakdowns, velocity charts, and resolution trends.",
+      path: "/reports",
+      actionText: "Explore Data →"
+    }
   ];
 
   return (
-    <div className="home-obsidian">
-      {/* Background Decorative Elements */}
-      <div className="bg-decor top-right"></div>
-      <div className="bg-decor bottom-left"></div>
-
-
-
-      {/* Main Content Area */}
-      <main className="home-main">
-        {/* Hero Section */}
-        <div className="hero-section">
-          <h1>
-            Complaint Management <span>System</span>
+    <div className="home-vercel-wrapper">
+      {/* Hero Mesh Section */}
+      <section className="hero-mesh-band mesh-gradient-container">
+        <div className="mesh-gradient-backdrop"></div>
+        <div className="ds-container hero-content-box">
+          <div className="mono-eyebrow">
+            COMPLAINT MANAGEMENT SYSTEM 3.0
+          </div>
+          
+          <h1 className="hero-display-title">
+            Build, track, and resolve complaints effortlessly.
           </h1>
-          <p>Submit, track and manage complaints efficiently.</p>
-        </div>
+          
+          <p className="hero-lead-text">
+            An enterprise resolution platform built for speed, transparency, and actionable governance.
+          </p>
 
-        {/* Action Cards Grid */}
-        <div className="action-grid">
-          {actions.map((item, index) => (
-            <div
-              key={index}
-              className="action-card group"
-              onClick={() => navigate(item.path)}
-            >
-              <div className="card-icon-wrap hover-scale">
-                <span className="material-symbols-outlined card-icon">{item.icon}</span>
-              </div>
-              <h3>{item.title}</h3>
-              <p>{item.desc}</p>
+          <div className="hero-cta-cluster">
+            <button className="btn-primary" onClick={() => navigate("/submit")}>
+              Submit a Complaint
+            </button>
+            <button className="btn-secondary" onClick={() => navigate("/track")}>
+              Track Existing Ticket
+            </button>
+          </div>
+
+          {/* Telemetry Bar */}
+          <div className="telemetry-bar">
+            <div className="telemetry-item">
+              <span className="telemetry-label">SYSTEM SLA</span>
+              <span className="telemetry-val">&lt; 24 HOURS</span>
             </div>
-          ))}
+            <div className="telemetry-divider"></div>
+            <div className="telemetry-item">
+              <span className="telemetry-label">RESOLUTION RATE</span>
+              <span className="telemetry-val">98.4%</span>
+            </div>
+            <div className="telemetry-divider"></div>
+            <div className="telemetry-item">
+              <span className="telemetry-label">ACTIVE AUDIT TRAIL</span>
+              <span className="telemetry-val">REALTIME</span>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Bottom Visual Anchor */}
-        <div className="bottom-visual">
-          <div className="glow-line"></div>
+      {/* Feature Grid Section */}
+      <section className="features-section">
+        <div className="ds-container">
+          <div className="section-head">
+            <div className="mono-eyebrow">WORKFLOW PLATFORM</div>
+            <h2 className="section-title">Designed for resolution efficiency.</h2>
+            <p className="section-desc">Every layer crafted with stark precision and developer-grade execution.</p>
+          </div>
+
+          <div className="feature-card-grid">
+            {features.map((feat, idx) => (
+              <div 
+                key={idx} 
+                className="vercel-card feature-card"
+                onClick={() => navigate(feat.path)}
+              >
+                <div className="feature-eyebrow">{feat.eyebrow}</div>
+                <h3 className="feature-title">{feat.title}</h3>
+                <p className="feature-desc">{feat.desc}</p>
+                <span className="feature-link">{feat.actionText}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Dark Polarity-Flip Section */}
+      <section className="dark-band dark-polarity-section">
+        <div className="ds-container dark-content-box">
+          <div className="mono-eyebrow">SECURITY & COMPLIANCE</div>
+          <h2 className="dark-title">Built with strict enterprise safeguards.</h2>
+          <p className="dark-desc">
+            Role-based authorization guarantees user data privacy while enabling admins to manage resolutions at scale.
+          </p>
+
+          <div className="dark-pill-row">
+            <span className="dark-tech-pill">JWT Authenticated</span>
+            <span className="dark-tech-pill">Spring Boot Engine</span>
+            <span className="dark-tech-pill">Vercel UI Chrome</span>
+            <span className="dark-tech-pill">Audit Trail Logged</span>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

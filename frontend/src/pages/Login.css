@@ -1,39 +1,47 @@
-.login-container {
+/* Vercel Login Styles */
+.auth-vercel-page {
+  min-height: calc(100vh - 64px);
+  background-color: var(--ds-canvas-soft);
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 80vh;
-  padding: 2rem;
+  justify-content: center;
+  padding: 48px 24px;
 }
 
-.login-box {
-  max-width: 400px;
+.auth-card {
   width: 100%;
-  padding: 2rem;
-  background: var(--surface);
-  border: 1px solid var(--surface-variant);
-  border-radius: 12px;
+  max-width: 440px;
+  background-color: var(--ds-canvas);
 }
 
-.login-box h2 {
-  margin-top: 0;
-  color: var(--on-surface);
-  margin-bottom: 0.5rem;
+.auth-brand-head {
+  text-align: center;
 }
 
-.login-box p {
-  color: var(--on-surface-variant);
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+.auth-title {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.96px;
+  color: var(--ds-ink);
+  margin-bottom: 8px;
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.auth-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ds-body);
 }
 
-.login-btn {
-  margin-top: 1rem;
-  width: 100%;
+.auth-footer-link {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ds-hairline);
+  text-align: center;
+  font-size: 13px;
+  color: var(--ds-mute);
+}
+
+.auth-footer-link a {
+  color: var(--ds-ink);
+  font-weight: 500;
 }

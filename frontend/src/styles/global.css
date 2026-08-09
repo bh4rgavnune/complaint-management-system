@@ -1,21 +1,83 @@
-/* ─── Reset & Base ─────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* Global Vercel Brand & Utility Classes */
 
-html, body {
-  height: 100%;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
-  background-color: #0f172a;
-  color: #f1f5f9;
-  line-height: 1.6;
-  font-size: 16px;
-}
-
-#root {
+.app-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--ds-canvas-soft);
+  color: var(--ds-ink);
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+}
+
+/* Mesh Gradient Backdrop for Hero & Atmospheric Sections */
+.mesh-gradient-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.mesh-gradient-backdrop {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 480px;
+  background: radial-gradient(circle at 50% 30%, rgba(80, 227, 194, 0.15), transparent 60%),
+              radial-gradient(circle at 20% 40%, rgba(0, 124, 240, 0.12), transparent 50%),
+              radial-gradient(circle at 80% 40%, rgba(235, 54, 127, 0.12), transparent 50%),
+              radial-gradient(circle at 60% 70%, rgba(121, 40, 202, 0.1), transparent 50%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Section Eyebrow (Technical Voice) */
+.mono-eyebrow {
+  font-family: var(--ds-font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ds-mute);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mono-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--ds-primary);
+}
+
+/* Polarities & Contrast Bands */
+.dark-band {
+  background-color: var(--ds-primary);
+  color: var(--ds-on-primary);
+}
+
+.dark-band h1, .dark-band h2, .dark-band h3, .dark-band h4 {
+  color: var(--ds-on-primary);
+}
+
+.dark-band p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dark-band .mono-eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dark-band .mono-eyebrow::before {
+  background-color: var(--ds-cyan);
 }
